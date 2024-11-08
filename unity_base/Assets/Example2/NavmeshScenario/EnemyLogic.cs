@@ -12,8 +12,11 @@ public class EnemyLogic : MonoBehaviour
     private Vector3 patrolPoint;
     private float idleTime;
 
-    // For adjusting. How far detects player (now just orb shaped detection), how far will wander at max, idle min max values.
-    public float detectionRange = 10f;
+    // if the player gets too close, alert the enemy guard
+    // even when the player is not in the range of the flashlight
+    [SerializeField]
+    public float detectionRange = 1.5f;
+
     public float patrolRange = 15f;
     public float idleTimeMin = 4f;
     public float idleTimeMax = 10f;
@@ -46,7 +49,9 @@ public class EnemyLogic : MonoBehaviour
         }
     }
 
-    private void SetState(EnemyState newState)
+    public EnemyState GetState() => currentState;
+
+    public void SetState(EnemyState newState)
     {
         currentState = newState;
 
@@ -95,7 +100,9 @@ public class EnemyLogic : MonoBehaviour
 
     private void HandleChaseState()
     {
-        if (!IsPlayerInRange())
+        // when in chase, the range is longer for keeping sight of the player
+        // in this, it is an additional 10 units
+        if (!IsPlayerInRange(10))
         {
             SetState(EnemyState.Patrolling); // Lost sight of player, returning to patrolling.
         }
@@ -105,9 +112,9 @@ public class EnemyLogic : MonoBehaviour
         }
     }
 
-    private bool IsPlayerInRange()
+    private bool IsPlayerInRange(float extraRange = 0)
     {
-        return Vector3.Distance(transform.position, player.position) < detectionRange;
+        return Vector3.Distance(transform.position, player.position) < detectionRange + extraRange;
     }
 
     private Vector3 GetRandomPatrolPoint()

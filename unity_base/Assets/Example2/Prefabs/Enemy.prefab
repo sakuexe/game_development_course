@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 698710380801692456}
   - component: {fileID: 4611542424332503361}
   - component: {fileID: 9176618553210613860}
+  - component: {fileID: 4210708671767000880}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -96,6 +97,22 @@ MonoBehaviour:
   patrolRange: 15
   idleTimeMin: 4
   idleTimeMax: 10
+--- !u!114 &4210708671767000880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863951994412150692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc7917897b67f3e47bb1003b9a05d595, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashlight: {fileID: 6490099952899636678}
+  coneAngle: 45
+  numberOfRays: 10
+  flashlightRange: 10
 --- !u!1 &2558827477284118318
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,7 +125,7 @@ GameObject:
   - component: {fileID: 6490099952899636678}
   - component: {fileID: 611913485154655230}
   m_Layer: 0
-  m_Name: Spot Light
+  m_Name: Flashlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122,13 +139,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2558827477284118318}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.18121739, y: -0, z: -0, w: 0.98344314}
-  m_LocalPosition: {x: 0, y: -0.00000011920929, z: 0.5999999}
+  m_LocalRotation: {x: 0.13119242, y: -0, z: -0, w: 0.99135697}
+  m_LocalPosition: {x: 0, y: -0, z: 0.5999999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6696255957296516519}
-  m_LocalEulerAnglesHint: {x: 20.881, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 15.077, y: 0, z: 0}
 --- !u!108 &6490099952899636678
 Light:
   m_ObjectHideFlags: 0
@@ -139,11 +156,11 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 80
+  m_Color: {r: 0.9339623, g: 0.8620288, b: 0.4801976, a: 1}
+  m_Intensity: 100
   m_Range: 6.56
-  m_SpotAngle: 104.583336
-  m_InnerSpotAngle: 71.97632
+  m_SpotAngle: 65
+  m_InnerSpotAngle: 65
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -182,9 +199,9 @@ Light:
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
+  m_BounceIntensity: 2
+  m_ColorTemperature: 5400
+  m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
