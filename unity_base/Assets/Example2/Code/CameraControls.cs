@@ -6,17 +6,23 @@ public class CameraControls : MonoBehaviour
     private GameObject player;
     [SerializeField]
     private float sensitivity = 1;
+    [SerializeField]
+    private Vector3 cameraOffset = new (10, 5, 0);
+    // states
     private Vector3 lastMousePosition;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private Vector3 lastPlayerPosition;
+
     void Start()
     {
         if (player != null) return;
         player = GameObject.FindWithTag("Player");
+        lastPlayerPosition = player.transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
+        FollowPlayer();
 
         if (Input.GetMouseButtonDown(1))
         {
@@ -29,6 +35,14 @@ public class CameraControls : MonoBehaviour
             RotateCamera(disableY: true);
             lastMousePosition = Input.mousePosition;
         }
+    }
+
+    private void FollowPlayer()
+    {
+        Vector3 distanceDifference = player.transform.position - lastPlayerPosition;
+        transform.position += distanceDifference;
+        lastPlayerPosition = player.transform.position;
+        UpdateCameraPosition();
     }
 
     // This is a free movement camera
@@ -53,5 +67,19 @@ public class CameraControls : MonoBehaviour
             float moveVertical = Input.GetAxis("Mouse Y");
             transform.RotateAround(Vector3.zero, transform.right, moveVertical * sensitivity); // again, use transform.Rotate(transform.right * rotateVertical * sensitivity) if you don't want the camera to rotate around the player
         }
+
+        UpdateCameraPosition();
+    }
+
+    private void UpdateCameraPosition()
+    {
+        // make sure that the camera keeps up
+        Vector3 direction = (transform.position - player.transform.position).normalized;
+        Vector3 desiredPosition = player.transform.position + direction * cameraOffset.magnitude;
+
+        desiredPosition.y = player.transform.position.y + cameraOffset.y;
+
+        transform.position = desiredPosition;
+        transform.LookAt(player.transform);
     }
 }

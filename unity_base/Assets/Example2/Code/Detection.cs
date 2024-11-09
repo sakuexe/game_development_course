@@ -62,20 +62,23 @@ public class Detection : MonoBehaviour
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, direction, out hit, flashlightRange, playerMask))
+        if (Physics.Raycast(transform.position, direction, out hit, flashlightRange))
         {
-            // get the player, and count the distance to it
-            GameObject player = hit.transform.gameObject;
-            float distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
-
+            if (hit.transform.gameObject.layer != playerMask)
+            {
+                Vector3 objectHitDirection = direction * hit.distance;
+                Debug.DrawRay(transform.position, objectHitDirection, Color.yellow);
+                return;
+            }
+            Vector3 hitDirection = direction * hit.distance;
             // draw the ray red 
-            Debug.DrawRay(transform.position, direction * distanceToPlayer, Color.red);
+            Debug.DrawRay(transform.position, hitDirection, Color.red);
             // make the enemy aggro
             enemyLogic.SetState(EnemyState.Chasing);
             return;
         }
 
-        // no player in ray, draw it red
+        // nothing in ray, draw it yellow
         Debug.DrawRay(transform.position, direction * flashlightRange, Color.yellow);
     }
 }
