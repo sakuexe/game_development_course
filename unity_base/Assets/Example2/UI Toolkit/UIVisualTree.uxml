@@ -1,0 +1,7 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Example2/UI%20Toolkit/MainUIStyle.uss?fileID=7433441132597879392&amp;guid=82ed8feacb52207f9b76323a3a7391b8&amp;type=3#MainUIStyle" />
+    <engine:VisualElement name="Top" class="top-bar" style="flex-grow: 0;">
+        <engine:VisualElement name="CharacterIcon" class="status-image" style="flex-grow: 1; align-items: center; justify-content: flex-start; -unity-background-scale-mode: stretch-to-fill;" />
+    </engine:VisualElement>
+    <engine:VisualElement name="VisualElement" style="flex-grow: 1; flex-shrink: 0;" />
+</engine:UXML>

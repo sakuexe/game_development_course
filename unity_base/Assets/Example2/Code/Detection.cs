@@ -14,35 +14,33 @@ public class Detection : MonoBehaviour
     private float flashlightRange = 10f;
 
     private EnemyLogic enemyLogic;
-    private LayerMask playerMask;
+    private string playerTag;
     private float idleFlashlightTemperature;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
         enemyLogic = GetComponent<EnemyLogic>();
-        playerMask = LayerMask.GetMask("Player");
+        // make sure that a visual indication for the cone of detection is there
         Assert.IsNotNull(flashlight);
     }
 
+    // no need to check on every frame
     private void FixedUpdate()
     {
-        DetectPlayer();
+        KeepEyeForPlayer();
 
         // color the flashlight based on the enemy state
         if (enemyLogic.GetState() == EnemyState.Chasing)
-        {
-            flashlight.colorTemperature = 1500;
-        }
+            flashlight.colorTemperature = 1500;  // anger!!!
         else
-            flashlight.colorTemperature = 5600;
+            flashlight.colorTemperature = 5600; // peace...
     }
 
-    private void DetectPlayer()
+    private void KeepEyeForPlayer()
     {
         Vector3 direction = transform.forward;
 
-        // count the steps for the angles of the rays
+        // count the steps to make a triangle of n amount of rays
         float angleStep = coneAngle / (numberOfRays - 1);
 
         for (int index = 0; index < numberOfRays; index++)
@@ -52,24 +50,26 @@ public class Detection : MonoBehaviour
             Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.up);
             Vector3 rayDirection = rotation * direction;
 
-            // if the ray did not find a player
             ShootRay(rayDirection);
         }
     }
 
-    // shoot a ray to a direction and return true if it hit
+    // shoot a ray to a direction and check for player detection
     private void ShootRay(Vector3 direction)
     {
         RaycastHit hit;
 
         if (Physics.Raycast(transform.position, direction, out hit, flashlightRange))
         {
-            if (hit.transform.gameObject.layer != playerMask)
+            // if the ray hits something that is not a player
+            if (!hit.transform.gameObject.CompareTag("Player"))
             {
                 Vector3 objectHitDirection = direction * hit.distance;
                 Debug.DrawRay(transform.position, objectHitDirection, Color.yellow);
                 return;
             }
+
+            // if the ray hits a player
             Vector3 hitDirection = direction * hit.distance;
             // draw the ray red 
             Debug.DrawRay(transform.position, hitDirection, Color.red);
@@ -78,7 +78,7 @@ public class Detection : MonoBehaviour
             return;
         }
 
-        // nothing in ray, draw it yellow
+        // if the ray hits nothing
         Debug.DrawRay(transform.position, direction * flashlightRange, Color.yellow);
     }
 }

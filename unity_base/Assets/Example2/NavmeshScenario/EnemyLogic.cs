@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -16,6 +17,10 @@ public class EnemyLogic : MonoBehaviour
     // even when the player is not in the range of the flashlight
     [SerializeField]
     public float detectionRange = 1.5f;
+
+    // events for enemy state, that the UI and other scripts can use
+    public Action onPlayerDetected;
+    public Action onPlayerLost;
 
     public float patrolRange = 15f;
     public float idleTimeMin = 4f;
@@ -53,19 +58,28 @@ public class EnemyLogic : MonoBehaviour
 
     public void SetState(EnemyState newState)
     {
+        EnemyState oldState = currentState;
         currentState = newState;
-
 
         //We could have these as their own functions, but for now, this is fine.
 
-        if (newState == EnemyState.Idle)
+        switch (currentState)
         {
-            idleTime = Random.Range(idleTimeMin, idleTimeMax); // Set random idle duration
-        }
-        else if (newState == EnemyState.Patrolling)
-        {
-            patrolPoint = GetRandomPatrolPoint(); // Set new patrol destination
-            moveComponent.MoveTo(patrolPoint);
+            case EnemyState.Idle:
+                idleTime = UnityEngine.Random.Range(idleTimeMin, idleTimeMax); // Set random idle duration
+                break;
+            case EnemyState.Patrolling:
+                patrolPoint = GetRandomPatrolPoint(); // Set new patrol destination
+                moveComponent.MoveTo(patrolPoint);
+                // lost the player
+                if (oldState == EnemyState.Chasing)
+                    onPlayerLost?.Invoke();
+                break;
+            case EnemyState.Chasing:
+                // detected the player
+                if (oldState != EnemyState.Chasing)
+                    onPlayerDetected?.Invoke();
+                break;
         }
     }
 
@@ -119,7 +133,7 @@ public class EnemyLogic : MonoBehaviour
 
     private Vector3 GetRandomPatrolPoint()
     {
-        Vector3 randomPoint = transform.position + Random.insideUnitSphere * patrolRange;
+        Vector3 randomPoint = transform.position + UnityEngine.Random.insideUnitSphere * patrolRange;
         NavMeshHit hit;
 
         //This line of code is part of Unity's NavMesh system and is used to find 

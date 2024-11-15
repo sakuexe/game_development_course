@@ -1,0 +1,25 @@
+.header {
+    font-size: 40px;
+    color: rgb(255, 255, 255);
+    -unity-text-align: upper-center;
+}
+
+.status-image {
+    width: 256px;
+    background-image: url("project://database/Assets/Example2/Assets/character_icon.png?fileID=2800000&guid=eda7003e07b9d9dcfb2e29253a5d54d1&type=3#character_icon");
+    -unity-background-scale-mode: scale-to-fit;
+    height: 256px;
+    transition-timing-function: ease-in-out;
+}
+
+.top-bar {
+    margin-top: 50px;
+    margin-right: 50px;
+    margin-bottom: 50px;
+    margin-left: 50px;
+}
+
+.in-danger {
+    background-color: rgba(0, 0, 0, 0);
+    -unity-background-image-tint-color: rgb(236, 76, 75);
+}

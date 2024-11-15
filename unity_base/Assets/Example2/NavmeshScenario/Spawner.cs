@@ -47,6 +47,7 @@ public class Spawner : MonoBehaviour
         int spawnSpotIndex = Random.Range(0, spawnPoints.Length);
         Transform spawnSpot = spawnPoints[spawnSpotIndex];
 
-        Instantiate(enemyPrefab, spawnSpot.position, spawnSpot.rotation);
+        GameObject enemy = Instantiate(enemyPrefab, spawnSpot.position, spawnSpot.rotation);
+        UIManager.Instance.AddEnemyListeners(enemy.GetComponent<EnemyLogic>());
     }
 }
